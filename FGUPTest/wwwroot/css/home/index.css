@@ -1,0 +1,13 @@
+﻿div.header {
+    text-align: center;
+    font-size: 30px;
+    line-break: normal;
+}
+
+.data-table:not(:first-of-type) {
+    margin-top: 80px;
+}
+
+.data-table:first-of-type {
+    margin-top: 20px;
+}

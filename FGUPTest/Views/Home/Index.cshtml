@@ -1,0 +1,88 @@
+﻿@section Styles
+{
+    <link rel="stylesheet" href="~/css/home/index.css" />
+}
+
+<div id="vueapp" class="vue-app">
+    <div class="container">
+        <div class="header">
+            Министерство транспорта РФ.
+            <br />
+            Данные по пассажирским перевозкам
+        </div>
+
+        <div>
+            <div v-for="district in tableData" class="data-table">
+                @*[district] - тк необходим array*@
+                <kendo-grid class="mb-4" :data-source="[district]"
+                            :groupable="false"
+                            :sortable="false"
+                            :resizable="false"
+                            :reorderable="false">
+
+                    <kendo-grid-column :title="'1.1 ФО'" :field="'name'" :width="180"></kendo-grid-column>
+
+                    <kendo-grid-column :title="'1.2. Пассажиропоток'" :columns="disctrictColumns"></kendo-grid-column>
+                </kendo-grid>
+
+                <div v-for="subject in district.subjectData">
+
+                    <kendo-grid class="mb-4" :data-source="[subject]"
+                                :groupable="false"
+                                :sortable="false"
+                                :resizable="false"
+                                :reorderable="false">
+
+                        <kendo-grid-column :title="'2.1. Субъект РФ'" :field="'name'" :width="180"></kendo-grid-column>
+
+                        <kendo-grid-column :title="'2.2. Пассажиропоток'" :columns="subjectColumns"></kendo-grid-column>
+                    </kendo-grid>
+
+
+                    <kendo-grid class="mb-4" :data-source="subject.insideRegionData"
+                                :groupable="false"
+                                :sortable="false"
+                                :resizable="false"
+                                :reorderable="false">
+
+                        <kendo-grid-column :title="'3.1. Маршрут'" :columns="regionRoutesColumns"></kendo-grid-column>
+
+                        <kendo-grid-column :title="'3.2. Пассажиропоток'" :columns="regionValuesColumns"></kendo-grid-column>
+                    </kendo-grid>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="indexModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ошибка</h5>
+                    <button type="button" class="close" @@click="closeModal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{errorTxt}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @@click="closeModal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="https://unpkg.com/@@progress/kendo-grid-vue-wrapper/dist/cdn/kendo-grid-vue-wrapper.js"></script>
+
+    <script>
+        var tableDataUrl = "@Url.Action("GetTableData","Home")";
+    </script>
+    <script src="~/js/home/index.js"></script>
+}
